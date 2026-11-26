@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Routine section — where & when users see it</title>
+<style>
+  :root{
+    color-scheme: light;
+    --ground:#F9F8F5; --paper:#FFFFFF; --sunken:#F1EFEA;
+    --ink:#1A1D26; --ink-2:#4B5060; --ink-3:#7C8090;
+    --line:#E3E0D8; --line-2:#EEECE6;
+    --navy:#354894; --magenta:#C2257F;
+    --green-ink:#2C7A4B; --green-bg:#E3F1E8;
+    --amber-ink:#9A6A06; --amber-bg:#FAEFD3;
+    --red-ink:#B8304B; --red-bg:#FAE3E8;
+  }
+  *{box-sizing:border-box}
+  body{
+    background:var(--ground); color:var(--ink); margin:0;
+    font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans Bengali",Helvetica,Arial,sans-serif;
+  }
+  .wrap{max-width:900px; margin:0 auto; padding:40px 22px 80px}
+  .kicker{color:var(--magenta); font-weight:700; letter-spacing:.08em; text-transform:uppercase; font-size:12.5px; margin:0 0 8px}
+  h1{font-size:30px; line-height:1.2; margin:0 0 10px; color:var(--ink)}
+  .sub{color:var(--ink-2); font-size:16px; margin:0 0 28px}
+  h2{font-size:20px; margin:38px 0 12px; color:var(--navy); display:flex; align-items:center; gap:10px}
+  h2 .n{display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:7px; background:var(--navy); color:#fff; font-size:14px; font-weight:700; flex:none}
+  p{margin:0 0 12px}
+  .card{background:var(--paper); border:1px solid var(--line); border-radius:14px; padding:20px 22px; margin:16px 0}
+  .layout{display:flex; gap:26px; align-items:flex-start; flex-wrap:wrap}
+  .shot{flex:none; width:230px}
+  .shot img{width:100%; border:1px solid var(--line); border-radius:14px; display:block}
+  .shot .cap{color:var(--ink-3); font-size:12.5px; text-align:center; margin-top:8px}
+  .grow{flex:1; min-width:280px}
+  .pill{display:inline-block; padding:3px 10px; border-radius:999px; font-size:12.5px; font-weight:600; border:1px solid var(--line)}
+  .yes{background:var(--green-bg); color:var(--green-ink); border-color:#CFE6D8}
+  .no{background:var(--red-bg); color:var(--red-ink); border-color:#F0D2DA}
+  ul{margin:6px 0 12px; padding-left:20px}
+  li{margin:6px 0}
+  b,strong{color:var(--ink)}
+  code{background:var(--sunken); border:1px solid var(--line-2); border-radius:5px; padding:1px 6px; font-size:13.5px; font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  table{width:100%; border-collapse:collapse; background:var(--paper); border:1px solid var(--line); border-radius:12px; overflow:hidden; margin:14px 0}
+  th,td{text-align:left; padding:11px 14px; border-bottom:1px solid var(--line-2); vertical-align:top; font-size:14.5px}
+  th{background:var(--sunken); color:var(--ink-2); font-size:12.5px; text-transform:uppercase; letter-spacing:.04em}
+  tr:last-child td{border-bottom:none}
+  .state-now{background:#FFF9E9}
+  .tag{font-size:12px; font-weight:700; color:var(--amber-ink); background:var(--amber-bg); border:1px solid #EFE0B8; padding:1px 7px; border-radius:6px; white-space:nowrap}
+  .note{background:var(--sunken); border:1px solid var(--line); border-left:4px solid var(--navy); border-radius:10px; padding:16px 18px; margin:16px 0; color:var(--ink-2)}
+  .decide{background:var(--paper); border:1px dashed var(--magenta); border-radius:14px; padding:18px 22px; margin:18px 0}
+  .decide h3{margin:0 0 10px; color:var(--magenta); font-size:16px}
+  .foot{color:var(--ink-3); font-size:13px; margin-top:34px; border-top:1px solid var(--line); padding-top:14px}
+  .bn{font-family:"Noto Sans Bengali",system-ui,sans-serif}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="kicker">Shikho SuperApp · UX audit</p>
+  <h1>The “রুটিন” section — where &amp; when users actually see it</h1>
+  <p class="sub">Before we remove it, here is exactly what this block is, which users get it, and in what situations — traced from the tech spec &amp; codemap.</p>
+
+  <div class="card">
+    <div class="layout">
+      <div class="shot">
+        <img src="routine-section-shot.jpeg" alt="Home screen with the Routine section">
+        <div class="cap">The section in question (Spoken English home)</div>
+      </div>
+      <div class="grow">
+        <h2 style="margin-top:0"><span class="n">1</span> What it is</h2>
+        <p>It’s a <b>home-screen widget</b> — the <b>Routine (<span class="bn">রুটিন</span>) section</b>: the weekly day strip (<span class="bn">শনি–শুক্র</span>), the class/exam legend, and a daily activity card.</p>
+        <p>It is <b>not</b> the full Class Routine calendar. That’s a separate screen opened by <span class="bn">“সব দেখো”</span> or push deep links. <b>Removing this home widget does not delete the full routine feature</b> — that stays reachable unless you say otherwise.</p>
+      </div>
+    </div>
+  </div>
+
+  <h2><span class="n">2</span> Who sees it</h2>
+  <p>It renders on the <b>Home tab only</b>, and <b>only for enrolled students</b>:</p>
+  <table>
+    <tr><th>User type</th><th>Sees the Routine section?</th><th>Where</th></tr>
+    <tr><td><b>Paid</b> student</td><td><span class="pill yes">Yes</span></td><td><code>PaidV2Screen</code> renders it</td></tr>
+    <tr><td><b>Trial</b> student</td><td><span class="pill yes">Yes</span></td><td><code>TrialV2Screen</code> renders the same widget</td></tr>
+    <tr><td><b>Free / not enrolled</b></td><td><span class="pill no">No</span></td><td><code>FreeUserScreen</code> has no routine section at all</td></tr>
+  </table>
+  <p style="color:var(--ink-2)">So the section is always present for <b>any paid or trial student</b> on their home. What changes is the card inside it.</p>
+
+  <h2><span class="n">3</span> When each state shows</h2>
+  <p>The card has <b>five states</b>, picked from the student’s course/phase situation:</p>
+  <table>
+    <tr><th>State</th><th>When it appears</th><th>What shows</th></tr>
+    <tr class="state-now">
+      <td><b>Empty</b> <span class="tag">your screenshot</span></td>
+      <td>The selected day has <b>nothing scheduled</b></td>
+      <td class="bn">“নতুন এক্টিভিটি শীঘ্রই দেখা যাবে”, day tabs still visible</td>
+    </tr>
+    <tr><td>Active</td><td>The day has classes / exams</td><td>The routine items for that day</td></tr>
+    <tr><td>Quarter not started</td><td>Paid, but the quarter hasn’t begun</td><td class="bn">“শীঘ্রই তোমার রুটিন যুক্ত হবে”</td></tr>
+    <tr><td>Current quarter unpaid</td><td>Running quarter not bought</td><td>Header + a locked enrol card</td></tr>
+    <tr><td>All quarters over</td><td>Whole program finished</td><td>Congratulations card + “see new courses” <span style="color:var(--ink-3)">(the dead-loop ticket)</span></td></tr>
+  </table>
+
+  <h2><span class="n">4</span> Why your screenshot is empty</h2>
+  <div class="note">
+    The account is on <b>Spoken English — a skill course, which has no class routine</b>. So the day always has nothing scheduled, and the widget sits <b>permanently</b> in the empty <span class="bn">“নতুন এক্টিভিটি শীঘ্রই দেখা যাবে”</span> state. For a normal academic program, the same widget shows real classes on scheduled days and this empty state only on off-days. The codemap itself flags this as an open design question — <i>“On a day with no class… is that the intended off-day screen?”</i>
+  </div>
+
+  <h2><span class="n">5</span> Before we write the removal ticket</h2>
+  <p>Two scope decisions change the ticket entirely:</p>
+  <div class="decide">
+    <h3>1 · How much to remove?</h3>
+    <ul>
+      <li><b>Whole widget</b> — drop the Routine section from the home for every paid/trial student.</li>
+      <li><b>Only when empty</b> — hide it just in the no-schedule state.</li>
+      <li><b>Skill courses only</b> — hide it for courses that never have a routine (e.g. Spoken English), keep it for academic programs.</li>
+    </ul>
+    <h3>2 · The full Routine screen stays — right?</h3>
+    <p style="margin:0">Removing this home widget does <b>not</b> touch the dedicated Class Routine calendar (<span class="bn">“সব দেখো”</span> / push deep links). I’ll assume that stays unless told otherwise.</p>
+  </div>
+
+  <p class="foot">Sources: dashboard &amp; class-routine specs, codemap — <code>RoutineSection.kt</code>, <code>PaidV2Screen.kt</code>, <code>TrialV2Screen.kt</code>, <code>FreeUserScreen.kt</code>, <code>HomeBody.kt</code>, <code>toRoutineSectionState</code>.</p>
+
+</div>
+</body>
+</html>

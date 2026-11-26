@@ -1,0 +1,186 @@
+<title>Shikho Current vs Proposed</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Side-by-side tappable device prototype: Current (real screens) vs Proposed (fix), per segment */
+:root{
+  color-scheme: light;
+  --ground:#F9F8F5;--paper:#FFFFFF;--sunken:#F1EFEA;
+  --ink:#1A1D26;--ink-2:#4B5060;--ink-3:#7C8090;
+  --line:#E3E0D8;--line-2:#EEECE6;
+  --navy:#354894;--navy-soft:#ECEEF8;--mag:#C2257F;--mag-soft:#FBEAF3;
+  --green:#2C7A4B;--green-soft:#E3F1E8;--red:#B8304B;--red-soft:#FAE3E8;
+  --f:'Inter',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font-family:var(--f);line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:22px 40px}
+.wrap{max-width:860px;margin:0 auto}
+h1{font-size:clamp(1.4rem,4vw,2rem);font-weight:700;letter-spacing:-.02em;margin:0 0 5px;text-wrap:balance}
+.lede{color:var(--ink-2);margin:0 0 18px;font-size:.95rem;max-width:62ch}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.tab{appearance:none;cursor:pointer;background:var(--paper);border:1px solid var(--line);border-radius:999px;padding:8px 15px;font-family:var(--f);font-size:.88rem;font-weight:600;color:var(--ink-2);transition:.12s}
+.tab:hover{border-color:var(--navy)}
+.tab[aria-selected=true]{background:var(--navy);border-color:var(--navy);color:#fff}
+.finding{background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--navy);border-radius:12px;padding:12px 15px;margin-bottom:20px;font-size:.92rem;color:var(--ink-2)}
+.finding b{color:var(--ink)}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+@media(max-width:620px){.compare{grid-template-columns:1fr;gap:28px}}
+.col-head{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.pill{font-size:.72rem;font-weight:700;letter-spacing:.03em;padding:3px 10px;border-radius:999px}
+.pill.cur{color:var(--red);background:var(--red-soft)}
+.pill.pro{color:var(--green);background:var(--green-soft)}
+.col-head small{color:var(--ink-3);font-size:.78rem}
+.device{display:flex;flex-direction:column;align-items:center;gap:12px}
+.phone{position:relative;width:100%;max-width:300px;aspect-ratio:300/650;background:#0d0f16;border-radius:26px;padding:7px;box-shadow:0 12px 32px -12px rgba(26,29,38,.38);cursor:pointer;user-select:none}
+.phone:active{transform:scale(.995)}
+.screen{width:100%;height:100%;border-radius:20px;overflow:hidden;background:#fff;position:relative}
+.screen img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.tapcue{position:absolute;right:10px;bottom:10px;background:rgba(13,15,22,.72);color:#fff;font-size:.66rem;font-weight:600;padding:3px 9px;border-radius:999px;pointer-events:none;letter-spacing:.02em}
+/* proposed screen render */
+.pscreen{width:100%;height:100%;display:flex;flex-direction:column;background:#fff}
+.phd{background:var(--navy);color:#fff;font-weight:600;font-size:.82rem;padding:16px 16px;min-height:76px;display:flex;align-items:center}
+.pbody{padding:12px 13px;display:flex;flex-direction:column;gap:9px;overflow:auto}
+.card{border-radius:10px;padding:11px 13px;font-size:.78rem;line-height:1.35;font-weight:500}
+.card.n{background:var(--sunken);color:var(--ink)}
+.card.navys{background:var(--navy-soft);color:var(--navy);font-weight:600}
+.card.navy{background:var(--navy);color:#fff;font-weight:600}
+.card.mag{background:var(--mag-soft);color:var(--mag);font-weight:600}
+.card.good{background:var(--green-soft);color:var(--green);font-weight:600}
+.card.ghost{background:var(--sunken);color:var(--ink-2)}
+.card.input{background:#fff;border:1.5px solid var(--mag);color:var(--ink-3)}
+.card.navylink{background:#fff;color:var(--navy);font-weight:600}
+.ctrls{display:flex;align-items:center;gap:11px}
+.nav{appearance:none;cursor:pointer;border:1px solid var(--line);background:var(--paper);color:var(--ink);width:38px;height:38px;border-radius:50%;font-size:1rem;display:grid;place-items:center}
+.nav:hover:not(:disabled){border-color:var(--navy);color:var(--navy)}
+.nav:disabled{opacity:.35;cursor:default}
+.dots{display:flex;gap:6px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--line);border:none;padding:0;cursor:pointer}
+.dot[aria-current=true]{width:20px;border-radius:999px}
+.dots.cur .dot[aria-current=true]{background:var(--red)}
+.dots.pro .dot[aria-current=true]{background:var(--green)}
+.cap{font-size:.8rem;color:var(--ink-2);text-align:center;min-height:2.6em;max-width:300px}
+.cap b{color:var(--ink)}
+footer{margin-top:26px;font-size:.78rem;color:var(--ink-3);border-top:1px solid var(--line);padding-top:16px}
+</style>
+
+<div class="wrap">
+  <h1>Shikho — Current vs Proposed</h1>
+  <p class="lede">Tap each phone to step through the flow. <b>Left = current app</b> (real on-device screens). <b>Right = proposed fix</b>. Switch user segment with the tabs.</p>
+  <div class="tabs" id="tabs" role="tablist"></div>
+  <div class="finding" id="finding"></div>
+  <div class="compare">
+    <div>
+      <div class="col-head"><span class="pill cur">CURRENT</span><small>the app today</small></div>
+      <div class="device">
+        <div class="phone" id="curPhone"><div class="screen" id="curScreen"></div></div>
+        <div class="ctrls"><button class="nav" id="curPrev" aria-label="Previous">&#8249;</button><div class="dots cur" id="curDots"></div><button class="nav" id="curNext" aria-label="Next">&#8250;</button></div>
+        <div class="cap" id="curCap"></div>
+      </div>
+    </div>
+    <div>
+      <div class="col-head"><span class="pill pro">PROPOSED</span><small>the fix</small></div>
+      <div class="device">
+        <div class="phone" id="proPhone"><div class="screen" id="proScreen"></div></div>
+        <div class="ctrls"><button class="nav" id="proPrev" aria-label="Previous">&#8249;</button><div class="dots pro" id="proDots"></div><button class="nav" id="proNext" aria-label="Next">&#8250;</button></div>
+        <div class="cap" id="proCap"></div>
+      </div>
+    </div>
+  </div>
+  <footer>Current screens captured live on a Pixel 7 · Proposed screens are mockups of the fix. Shikho Android SuperApp.</footer>
+</div>
+
+<script>
+const SEG=[
+ {id:"fresh",name:"Fresh",
+  finding:"<b>A new learner clears ~9 screens, a forced OTP + PIN and a trap-prone hard wall — and is handed a sales page, not a lesson.</b> ~2,000 sign-ups a day never enrol.",
+  cur:[
+   {img:"f1",cap:"Forced OTP — resend locked behind a <b>2-minute</b> countdown."},
+   {img:"f3",cap:"Home is <b>hard-walled</b> by a mandatory school sheet — no skip, no back."},
+   {img:"f5",cap:"School search results render <b>behind the keyboard</b> — nearly untappable."},
+   {img:"f6",cap:"Past the wall, the home is a <b>sales page</b> — no free content up front."}],
+  pro:[
+   {title:"Add your school (optional)",cap:"School step is <b>optional & skippable</b>, and results show <b>inline</b>.",
+    rows:[{t:"বিভাগ  ▾   Dhaka",c:"n"},{t:"জেলা  ▾   Dhaka",c:"n"},{t:"🔍  Search school…",c:"input"},{t:"✓  Mohammadpur Girls' High School",c:"mag"},{t:"✓  Results show inline — above the keyboard",c:"good"},{t:"Skip for now",c:"ghost"},{t:"Save  →   (enabled)",c:"navy"}]},
+   {title:"হোম · Start learning",cap:"<b>Value-first home</b> — real free lessons up front; upsell is a soft strip.",
+    rows:[{t:"▶  Free lesson · Real Numbers (1.1)",c:"navys"},{t:"▶  Free lesson · Set & Function",c:"navys"},{t:"✎  Practice quiz · 3 free today",c:"n"},{t:"Enjoying it? Start a 3-day full trial   ×",c:"mag"},{t:"✓  Free lessons first; upsell is dismissible",c:"good"}]}]},
+ {id:"trial",name:"Trial",
+  finding:"<b>An active trial gives real full content access — but the home is a gauntlet</b> of forced tour, friction-to-dismiss and a pinned paywall banner.",
+  cur:[
+   {img:"t1",cap:"Home opens under a <b>forced 'Discover Shikho' tour</b>."},
+   {img:"t3",cap:"A pinned <b>trial-expiry banner</b> + a misleading <b>'Premium'</b> badge."},
+   {img:"t5",cap:"Inside the trial, content <b>plays full access</b> — this part works. ✓"}],
+  pro:[
+   {title:"হোম · Trial — 3 days left",cap:"Calm trial home — <b>content first</b>, no forced tour, honest labelling.",
+    rows:[{t:"▶  Continue · Higher Math — Admission Solving",c:"navys"},{t:"🗓  Today's routine · 3 classes",c:"n"},{t:"Trial ends in 3 days · Enrol    ×",c:"ghost"},{t:"✓  No forced tour · banner dismissible · no fake 'Premium'",c:"good"}]}]},
+ {id:"paid",name:"Paid",
+  finding:"<b>A well-set-up paid account works cleanly — the damage is enrolment sprawl and false-empty content states at the edges.</b>",
+  cur:[
+   {img:"p1",cap:"A <b>bKash nag</b>, and the program selector shows the <b>wrong class</b>."},
+   {img:"p2",cap:"<b>Enrolment sprawl</b> — 3+ near-identical course cards."},
+   {img:"p3",cap:"A running quarter of a paid subject says <b>'no chapters added'</b>."}],
+  pro:[
+   {title:"হোম · Class 9 · SSC'28",cap:"Right program defaulted; <b>deduped</b> to one course; real content.",
+    rows:[{t:"My course · Class 9 — SSC'28 Science",c:"navys"},{t:"Quarter 1 · গণিত — 18 chapters  ▶",c:"n"},{t:"↻  Resume · Real Numbers (1.2)",c:"n"},{t:"✓  Correct class · one clear course · real chapter list",c:"good"}]}]},
+ {id:"incomplete",name:"Paid · incomplete",
+  finding:"<b>The betrayal case: a paying student is dropped onto a dead course and told to buy a new one</b> — while 5+ active courses hide behind a switcher. ~99% of active payers are exposed.",
+  cur:[
+   {img:"i1",cap:"Defaulted to a <b>dead HSC'26 course</b> → 'course completed, buy new'."},
+   {img:"i2",cap:"Her <b>5+ real active HSC'27 courses</b> are hidden in the switcher."}],
+  pro:[
+   {title:"হোম · HSC'27 (active)",cap:"Defaults to the <b>active course</b>; the dead one is archived, not shown.",
+    rows:[{t:"Active · লক্ষ্য GPA-5 HSC'27 — Resume ▶",c:"navys"},{t:"Last year's HSC'26 course · archived",c:"ghost"},{t:"Add board roll later · soft reminder   ×",c:"mag"},{t:"✓  Defaults to the ACTIVE course, never the dead one",c:"good"}]}]},
+ {id:"returning",name:"Returning",
+  finding:"<b>Logging back in is a full restart into the new-user intro — and the home gauntlet re-fires on every re-entry.</b>",
+  cur:[
+   {img:"r1",cap:"Logout <b>restarts the app</b> into the same new-user intro carousel."}],
+  pro:[
+   {title:"Welcome back, Nusrat 👋",cap:"A <b>welcome-back PIN screen</b> — no carousel, no re-onboarding.",
+    rows:[{t:"Enter your 6-digit PIN",c:"input"},{t:"•   •   •   •   •   •",c:"n"},{t:"Forgot PIN?",c:"navylink"},{t:"✓  Fast re-entry — no carousel, no re-gauntlet",c:"good"}]}]}
+];
+
+let si=0, ci=0, pi=0;
+const $=id=>document.getElementById(id);
+
+function renderTabs(){
+  const w=$("tabs"); w.innerHTML="";
+  SEG.forEach((s,i)=>{
+    const b=document.createElement("button");
+    b.className="tab"; b.setAttribute("role","tab"); b.textContent=s.name;
+    b.setAttribute("aria-selected", i===si?"true":"false");
+    b.onclick=()=>{si=i;ci=0;pi=0;render();};
+    w.appendChild(b);
+  });
+}
+function dots(container,n,idx,cls){
+  container.innerHTML="";
+  for(let i=0;i<n;i++){const d=document.createElement("button");d.className="dot";d.setAttribute("aria-current",i===idx?"true":"false");d.onclick=()=>{if(cls==="cur"){ci=i;}else{pi=i;}render();};container.appendChild(d);}
+}
+function proposedHTML(screen){
+  let cards=screen.rows.map(r=>`<div class="card ${r.c}">${r.t}</div>`).join("");
+  return `<div class="pscreen"><div class="phd">${screen.title}</div><div class="pbody">${cards}</div></div>`;
+}
+function render(){
+  const seg=SEG[si];
+  document.querySelectorAll(".tab").forEach((el,i)=>el.setAttribute("aria-selected",i===si?"true":"false"));
+  $("finding").innerHTML=seg.finding;
+  if(ci>=seg.cur.length)ci=0; if(pi>=seg.pro.length)pi=0;
+  const c=seg.cur[ci];
+  $("curScreen").innerHTML=`<img src="img/${c.img}.png" alt=""><span class="tapcue">tap ▸ ${ci+1}/${seg.cur.length}</span>`;
+  $("curCap").innerHTML=c.cap;
+  dots($("curDots"),seg.cur.length,ci,"cur");
+  $("curPrev").disabled=ci===0; $("curNext").disabled=ci===seg.cur.length-1;
+  const p=seg.pro[pi];
+  $("proScreen").innerHTML=proposedHTML(p)+`<span class="tapcue">tap ▸ ${pi+1}/${seg.pro.length}</span>`;
+  $("proCap").innerHTML=p.cap;
+  dots($("proDots"),seg.pro.length,pi,"pro");
+  $("proPrev").disabled=pi===0; $("proNext").disabled=pi===seg.pro.length-1;
+}
+$("curPhone").onclick=()=>{const n=SEG[si].cur.length;ci=(ci+1)%n;render();};
+$("proPhone").onclick=()=>{const n=SEG[si].pro.length;pi=(pi+1)%n;render();};
+$("curNext").onclick=e=>{e.stopPropagation();if(ci<SEG[si].cur.length-1){ci++;render();}};
+$("curPrev").onclick=e=>{e.stopPropagation();if(ci>0){ci--;render();}};
+$("proNext").onclick=e=>{e.stopPropagation();if(pi<SEG[si].pro.length-1){pi++;render();}};
+$("proPrev").onclick=e=>{e.stopPropagation();if(pi>0){pi--;render();}};
+renderTabs(); render();
+</script>

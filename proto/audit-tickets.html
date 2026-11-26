@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shikho UX Audit — Sprint 10 tickets</title>
+<style>
+:root{color-scheme:light;--ground:#F9F8F5;--paper:#FFFFFF;--sunken:#F1EFEA;--ink:#1A1D26;--ink2:#4B5060;--ink3:#7C8090;--line:#E3E0D8;--line2:#EEECE6;--navy:#354894;--magenta:#C2257F;}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);margin:0;font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans Bengali",Helvetica,Arial,sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding:40px 22px 90px}
+.kicker{color:var(--magenta);font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:12.5px;margin:0 0 8px}
+h1{font-size:30px;margin:0 0 6px}
+.lead{color:var(--ink2);margin:0 0 26px}
+.toc{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin:0 0 34px}
+.toc h4{margin:0 0 10px;color:var(--ink3);font-size:12.5px;text-transform:uppercase;letter-spacing:.05em}
+.toc ol{margin:0;padding-left:20px} .toc li{margin:5px 0}
+.toc a{color:var(--navy);text-decoration:none} .toc a:hover{text-decoration:underline}
+.ticket{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:0;margin:0 0 26px;overflow:hidden}
+.thead{display:flex;gap:16px;align-items:flex-start;padding:22px 24px 18px;border-bottom:1px solid var(--line2);background:linear-gradient(180deg,#FCFBF9,#FFFFFF)}
+.tnum{flex:none;width:34px;height:34px;border-radius:9px;background:var(--navy);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:16px}
+.tmeta{flex:1}
+.ttags{color:var(--ink3);font-size:12px;font-family:ui-monospace,Menlo,Consolas,monospace;margin-bottom:3px}
+.tmeta h2{font-size:19px;line-height:1.3;margin:0 0 10px;color:var(--ink)}
+.trow{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.prio{font-size:12px;font-weight:700;padding:3px 11px;border-radius:999px;border:1px solid}
+.cu{color:var(--magenta);text-decoration:none;font-size:13.5px;font-weight:600} .cu:hover{text-decoration:underline}
+.tbody{display:flex;gap:26px;align-items:flex-start;padding:22px 24px 26px;flex-wrap:wrap}
+.shot{flex:none;width:250px;display:flex;flex-direction:column;gap:12px}
+.shot img{width:100%;border:1px solid var(--line);border-radius:12px;display:block}
+.desc{flex:1;min-width:300px}
+.desc h3.sec{font-size:14px;text-transform:uppercase;letter-spacing:.04em;color:var(--navy);margin:18px 0 8px}
+.desc h3.sec:first-child{margin-top:0}
+.desc p{margin:0 0 10px}
+.desc ul,.desc ol{margin:6px 0 12px;padding-left:22px} .desc li{margin:5px 0}
+.desc code{background:var(--sunken);border:1px solid var(--line2);border-radius:5px;padding:1px 6px;font-size:13px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.tblwrap{overflow-x:auto;margin:10px 0}
+.desc table{border-collapse:collapse;width:100%;border:1px solid var(--line);border-radius:10px;font-size:13px;min-width:520px}
+.desc th,.desc td{border-bottom:1px solid var(--line2);padding:8px 11px;text-align:left;vertical-align:top}
+.desc th{background:var(--sunken);color:var(--ink2);font-size:11.5px;text-transform:uppercase;letter-spacing:.03em}
+.desc tr:last-child td{border-bottom:none}
+.foot{color:var(--ink3);font-size:13px;margin-top:30px;border-top:1px solid var(--line);padding-top:14px}
+</style></head>
+<body><div class="wrap">
+<p class="kicker">Shikho SuperApp · Sprint 10</p>
+<h1>UX Audit — tickets</h1>
+<p class="lead">Eight tickets filed from the UX audit. Each shows its title, the evidence screenshot, and the full description.</p>
+<div class="toc"><h4>Tickets</h4><ol><li><a href='#t1'>1. Half-yearly certificate card appears when there&#x27;s no result to show</a></li><li><a href='#t2'>2. Disable the inescapable &#x27;Discover Shikho&#x27; tour (no skip or close) for all users</a></li><li><a href='#t3'>3. Disable the mandatory school-selection wall for all users</a></li><li><a href='#t4'>4. &#x27;Premium&#x27; badge shows for trial and expired users — limit it to active paid</a></li><li><a href='#t5'>5. Remove the dead &#x27;Notification&#x27; menu row (bounces to Home)</a></li><li><a href='#t6'>6. &#x27;Share location&#x27; popup is forced and repeats — show it once and let people close it</a></li><li><a href='#t7'>7. &quot;See new courses&quot; is a dead loop for returning students — show their next courses first</a></li><li><a href='#t8'>8. Hide the empty &quot;নতুন এক্টিভিটি শীঘ্রই দেখা যাবে&quot; routine card when nothing is scheduled</a></li></ol></div>
+
+<section class="ticket" id="t1">
+  <div class="thead">
+    <div class="tnum">1</div>
+    <div class="tmeta">
+      <div class="ttags">[PROD][APP][Home]</div>
+      <h2>Half-yearly certificate card appears when there&#x27;s no result to show</h2>
+      <div class="trow">
+        <span class="prio" style="color:#B8304B;background:#FAE3E8;border-color:#F0D2DA">Urgent</span>
+        <a class="cu" href="https://app.clickup.com/t/z8zyy1ujwy" target="_blank">Open in ClickUp ↗</a>
+      </div>
+    </div>
+  </div>
+  <div class="tbody">
+    <div class="shot"><a href='evidence/ev_cert.jpg' target='_blank'><img src='evidence/ev_cert.jpg' alt='screenshot 1'></a></div>
+    <div class="desc"><h3 class='sec'>Problem</h3>
+<p>On the paid Home, the top card says <strong>&quot;Your certificate is ready — tap to download or share&quot;</strong> even when the student has no half-yearly result. There is no certificate to open, so tapping it leads to an empty screen.</p>
+<h3 class='sec'>How to reproduce</h3>
+<ol><li>Log in with a <strong>paid (Premium)</strong> account on a school batch between <strong>Class 5 and Class 10</strong> (seen on Class 7, SSC &#x27;30).</li><li>Make sure that account has <strong>no half-yearly result published</strong> yet.</li><li>Open the app and go to the <strong>Home (হোম)</strong> tab.</li><li>Look at the top card — it reads _&quot;See your certificate now / tap to download or share&quot;_.</li><li>Tap the card → it opens an empty screen; there is no certificate.</li></ol>
+<h3 class='sec'>Who&#x27;s affected</h3>
+<ul><li><strong>Paid (Premium) students only</strong> — trial and free users don&#x27;t see this card.</li><li><strong>Class 5–10 school batches</strong> — shown as a half-yearly certificate for Class 5–9, and a pre-test certificate for Class 10.</li><li><strong>Not HSC (Class 11–12)</strong> — they have no half-yearly exam and don&#x27;t see it today. Keep it that way.</li></ul>
+<h3 class='sec'>Why it matters</h3>
+<p>This is the most visible spot on Home, and we&#x27;re using it to promise a certificate that doesn&#x27;t exist. Students tap it expecting a reward and get nothing.</p>
+<h3 class='sec'>What we should do</h3>
+<ul><li>Show the card <strong>only when a real certificate exists</strong>. Hide it when there isn&#x27;t one.</li><li>When a certificate does exist, it should open correctly.</li><li>Result: a paid student only sees &quot;your certificate is ready&quot; when it&#x27;s true, and students who have one still get it.</li></ul></div>
+  </div>
+</section>
+<section class="ticket" id="t2">
+  <div class="thead">
+    <div class="tnum">2</div>
+    <div class="tmeta">
+      <div class="ttags">[PROD][APP][Home]</div>
+      <h2>Disable the inescapable &#x27;Discover Shikho&#x27; tour (no skip or close) for all users</h2>
+      <div class="trow">
+        <span class="prio" style="color:#B8304B;background:#FAE3E8;border-color:#F0D2DA">Urgent</span>
+        <a class="cu" href="https://app.clickup.com/t/z8zyy1ujz7" target="_blank">Open in ClickUp ↗</a>
+      </div>
+    </div>
+  </div>
+  <div class="tbody">
+    <div class="shot"><a href='evidence/ev_tour.jpg' target='_blank'><img src='evidence/ev_tour.jpg' alt='screenshot 1'></a></div>
+    <div class="desc"><h3 class='sec'>Problem</h3>
+<p>This is the worst issue in the audit. After signup and starting a trial, the user lands on Home and the <strong>&quot;Discover Shikho&quot; tour</strong> opens. The only button that works is &quot;Start tour&quot; — no skip, no close, and back and tapping outside do nothing. The user is stuck on their first screen.</p>
+<h3 class='sec'>How to reproduce</h3>
+<ol><li>Create a <strong>fresh account</strong> (or use any non-paid account — free, trial, or lapsed).</li><li>If new: finish signup and <strong>start the free trial</strong>.</li><li>Land on the <strong>Home (হোম)</strong> tab — the <strong>&quot;Discover Shikho&quot;</strong> tour appears with a &quot;Start tour&quot; button.</li><li>Try to leave it: press <strong>back</strong>, <strong>tap outside</strong> the modal, look for a <strong>✕ / skip</strong> — none of them work.</li><li>Confirm the only thing that does anything is &quot;Start tour&quot;.</li></ol>
+<h3 class='sec'>Who&#x27;s affected</h3>
+<ul><li><strong>All non-paid users</strong> — free, trial, and lapsed — on every class including HSC, every time.</li><li><strong>Paid users never see it.</strong></li></ul>
+<h3 class='sec'>Why it matters</h3>
+<p>A brand-new student we just paid to bring in is blocked on the very first screen. This is the fastest way to lose them.</p>
+<h3 class='sec'>What we should do</h3>
+<ul><li><strong>Turn the tour off for everyone now</strong> — a simple on/off switch, not a redesign.</li><li>Bring it back only after it has a working skip/close (separate task).</li><li>Keep it reversible. When done: no non-paid user sees the tour, paid is unchanged, back and tap-outside work normally, and nothing is left broken where the tour used to be.</li></ul></div>
+  </div>
+</section>
+<section class="ticket" id="t3">
+  <div class="thead">
+    <div class="tnum">3</div>
+    <div class="tmeta">
+      <div class="ttags">[PROD][APP][Home]</div>
+      <h2>Disable the mandatory school-selection wall for all users</h2>
+      <div class="trow">
+        <span class="prio" style="color:#B8304B;background:#FAE3E8;border-color:#F0D2DA">Urgent</span>
+        <a class="cu" href="https://app.clickup.com/t/z8zyy1uk1b" target="_blank">Open in ClickUp ↗</a>
+      </div>
+    </div>
+  </div>
+  <div class="tbody">
+    <div class="shot"><a href='evidence/ev_wall.jpg' target='_blank'><img src='evidence/ev_wall.jpg' alt='screenshot 1'></a></div>
+    <div class="desc"><h3 class='sec'>Problem</h3>
+<p>If a user hasn&#x27;t saved a school, Home opens a school-selection sheet they can&#x27;t close — the ✕ is invisible and back doesn&#x27;t work. To reach Home, they&#x27;re forced to pick <strong>Division → District → School</strong> first. An invisible close is worse than a plain block: it just looks broken.</p>
+<h3 class='sec'>How to reproduce</h3>
+<ol><li>Use an account with <strong>no school saved</strong> (a fresh signup works — signup never asks for a school).</li><li>Open the app and go to the <strong>Home (হোম)</strong> tab.</li><li>A school-selection sheet opens over Home (<strong>Division → District → School</strong>).</li><li>Try to close it: tap the <strong>✕</strong> area (it&#x27;s drawn invisible) and press <strong>back</strong> — neither dismisses it.</li><li>Confirm you must select Division, District, and School before you can reach Home.</li></ol>
+<h3 class='sec'>Who&#x27;s affected</h3>
+<ul><li><strong>All users — paid, free, and trial</strong> — whenever their school field is empty.</li><li><strong>Almost every new account</strong>, because signup collects name, class, group, and batch, but not a school. It comes back on every Home load until they pick one.</li></ul>
+<h3 class='sec'>Why it matters</h3>
+<p>We&#x27;re blocking the main screen to collect something we don&#x27;t need before a student can start learning — and the broken-looking close makes the first impression worse.</p>
+<h3 class='sec'>What we should do</h3>
+<ul><li><strong>Stop forcing the sheet on Home.</strong> Let users reach Home right away.</li><li>Keep setting a school <strong>optional</strong>, in Profile → Edit where it already is.</li><li>Temporary and reversible. When done: no one is forced into it on Home, Home works on first load, and the optional school edit still works.</li></ul></div>
+  </div>
+</section>
+<section class="ticket" id="t4">
+  <div class="thead">
+    <div class="tnum">4</div>
+    <div class="tmeta">
+      <div class="ttags">[PROD][APP][Home]</div>
+      <h2>&#x27;Premium&#x27; badge shows for trial and expired users — limit it to active paid</h2>
+      <div class="trow">
+        <span class="prio" style="color:#9A6A06;background:#FAEFD3;border-color:#EFE0B8">High</span>
+        <a class="cu" href="https://app.clickup.com/t/z8zyy1uk1u" target="_blank">Open in ClickUp ↗</a>
+      </div>
+    </div>
+  </div>
+  <div class="tbody">
+    <div class="shot"><a href='evidence/ev_trialprem.jpg' target='_blank'><img src='evidence/ev_trialprem.jpg' alt='screenshot 1'></a><a href='evidence/ev_congrats.jpg' target='_blank'><img src='evidence/ev_congrats.jpg' alt='screenshot 2'></a></div>
+    <div class="desc"><h3 class='sec'>Problem</h3>
+<p>The gold <strong>&quot;Premium&quot; badge</strong> should mean the user is paying for Shikho right now. Instead, it shows for anyone who isn&#x27;t a brand-new free user — so trial users get it, and so do users whose paid course has expired and who are back in the free/trial section.</p>
+<h3 class='sec'>How to reproduce</h3>
+<p><strong>Case A — Trial user</strong></p>
+<ol><li>Use an account on a <strong>free trial</strong> (not paid).</li><li>Open the <strong>Home (হোম)</strong> tab.</li><li>The header shows the gold <strong>&quot;প্রিমিয়াম&quot; (Premium)</strong> badge, even though the user hasn&#x27;t paid.</li></ol>
+<p><strong>Case B — Expired / lapsed buyer</strong></p>
+<ol><li>Use an account that <strong>bought a course which has since expired</strong> and is now back in the free/trial section.</li><li>Open the <strong>Home (হোম)</strong> tab.</li><li>The Premium badge <strong>still</strong> shows, even though the paid access has ended.</li></ol>
+<h3 class='sec'>Who&#x27;s affected</h3>
+<ul><li><strong>Trial users</strong> — see Premium even though they haven&#x27;t paid.</li><li><strong>Expired/lapsed buyers</strong> now in free/trial — still see Premium.</li><li><strong>Active paid users</strong> — correct, and should keep it.</li></ul>
+<h3 class='sec'>Why it matters</h3>
+<p>It tells users they have something they don&#x27;t, and it weakens our upgrade offer — Premium is harder to sell when non-paying users already look Premium.</p>
+<h3 class='sec'>What we should do</h3>
+<ul><li>Show the badge <strong>and</strong> the avatar crown <strong>only for active, non-expired paid users</strong>.</li><li>Trial and expired users: no badge. Active paid: keep it.</li><li>The badge and the crown should always match — they mean the same thing.</li></ul></div>
+  </div>
+</section>
+<section class="ticket" id="t5">
+  <div class="thead">
+    <div class="tnum">5</div>
+    <div class="tmeta">
+      <div class="ttags">[PROD][APP][Profile]</div>
+      <h2>Remove the dead &#x27;Notification&#x27; menu row (bounces to Home)</h2>
+      <div class="trow">
+        <span class="prio" style="color:#9A6A06;background:#FAEFD3;border-color:#EFE0B8">High</span>
+        <a class="cu" href="https://app.clickup.com/t/z8zyy1uqng" target="_blank">Open in ClickUp ↗</a>
+      </div>
+    </div>
+  </div>
+  <div class="tbody">
+    <div class="shot"><a href='evidence/ev_notif.jpg' target='_blank'><img src='evidence/ev_notif.jpg' alt='screenshot 1'></a></div>
+    <div class="desc"><h3 class='sec'>Problem</h3>
+<p>The <strong>&quot;Notification&quot;</strong> row in the Profile menu doesn&#x27;t do anything — tapping it sends the user back to Home with no screen. The notifications screen it used to open was removed, and the menu item was left pointing at nothing. &quot;Settings&quot; right below it works, so the broken row stands out.</p>
+<h3 class='sec'>How to reproduce</h3>
+<ol><li>Log in with <strong>any</strong> account.</li><li>On Home, tap the <strong>profile avatar</strong> (top-right) to open the Profile menu.</li><li>Tap the <strong>&quot;নোটিফিকেশন&quot; (Notification)</strong> row.</li><li>The menu closes and you land back on <strong>Home</strong> — no notifications screen opens.</li><li>Tap it again → same thing every time. (For contrast, &quot;Settings&quot; right below it works.)</li></ol>
+<h3 class='sec'>Who&#x27;s affected</h3>
+<ul><li><strong>Every logged-in user</strong> has this row. We hit it 4 times during the audit.</li></ul>
+<h3 class='sec'>Why it matters</h3>
+<p>A button that does nothing makes the app feel broken and lowers trust.</p>
+<h3 class='sec'>What we should do</h3>
+<ul><li><strong>Remove or hide the row.</strong> There&#x27;s nothing to open, so a clean menu is better than a dead link. It can come back if a real notifications screen is built later.</li><li><strong>Don&#x27;t touch push notifications</strong> — the ones in the phone&#x27;s notification tray and their links are a separate system that works. This is only about the dead menu row.</li><li>When done: the dead row is gone (or opens a real screen), the rest of the Profile menu still works, and push notifications are unchanged.</li></ul></div>
+  </div>
+</section>
+<section class="ticket" id="t6">
+  <div class="thead">
+    <div class="tnum">6</div>
+    <div class="tmeta">
+      <div class="ttags">[PROD][APP][Home]</div>
+      <h2>&#x27;Share location&#x27; popup is forced and repeats — show it once and let people close it</h2>
+      <div class="trow">
+        <span class="prio" style="color:#9A6A06;background:#FAEFD3;border-color:#EFE0B8">High</span>
+        <a class="cu" href="https://app.clickup.com/t/z8zyy1ur0r" target="_blank">Open in ClickUp ↗</a>
+      </div>
+    </div>
+  </div>
+  <div class="tbody">
+    <div class="shot"><a href='evidence/ev_location.jpg' target='_blank'><img src='evidence/ev_location.jpg' alt='screenshot 1'></a></div>
+    <div class="desc"><h3 class='sec'>Problem</h3>
+<p>Right after login, before the user reaches Home, a full-screen <strong>&quot;Share your location&quot;</strong> card shows up. It has one button — &quot;Proceed.&quot; There is no close (✕), no skip, and back doesn&#x27;t work. The user can&#x27;t get past it without tapping Proceed. If they decline, or location isn&#x27;t saved, the card shows again next time they open Home.</p>
+<h3 class='sec'>How to reproduce</h3>
+<ol><li>Use an account that <strong>hasn&#x27;t shared its location yet</strong> (a fresh signup works — signup never asks for location).</li><li>Open the app and reach the <strong>Home (হোম)</strong> tab.</li><li>A full-screen <strong>&quot;Share your location&quot;</strong> card appears, with only an <strong>&quot;এগিয়ে যাও / Proceed&quot;</strong> button.</li><li>Try to close it: look for a <strong>✕</strong>, <strong>tap outside</strong>, press <strong>back</strong> — none dismiss it.</li><li>Without tapping Proceed, close and reopen the app to Home → the card <strong>appears again</strong>.</li></ol>
+<h3 class='sec'>Who&#x27;s affected</h3>
+<ul><li><strong>All users — paid, free, and trial.</strong> It depends only on whether the account has shared location yet, not on user type.</li><li><strong>Almost every new user</strong>, because signup never asks for location.</li><li>It&#x27;s the <strong>first popup on Home</strong>, before anything else.</li></ul>
+<h3 class='sec'>Why it matters</h3>
+<p>A new student&#x27;s first moment in the app is a popup they can&#x27;t close, for something that isn&#x27;t even required. It&#x27;s an easy way to annoy people and lose trust.</p>
+<h3 class='sec'>What we should do</h3>
+<ul><li>Show it <strong>once per account, ever</strong> — whether the user accepts, declines, or closes it. Don&#x27;t show it again.</li><li>Add a <strong>working close</strong> (✕, tap outside, and back should all close it).</li><li>Keep <strong>Proceed as an optional choice</strong>, not the only way out. Nothing changes for users who do want to share location.</li><li>_Side note (not part of this fix):_ the reason text &quot;for video quality optimization&quot; is unclear and a bit misleading — worth rewording later.</li></ul></div>
+  </div>
+</section>
+<section class="ticket" id="t7">
+  <div class="thead">
+    <div class="tnum">7</div>
+    <div class="tmeta">
+      <div class="ttags">[PROD][APP][Course]</div>
+      <h2>&quot;See new courses&quot; is a dead loop for returning students — show their next courses first</h2>
+      <div class="trow">
+        <span class="prio" style="color:#9A6A06;background:#FAEFD3;border-color:#EFE0B8">High</span>
+        <a class="cu" href="https://app.clickup.com/t/z8zyy1urae" target="_blank">Open in ClickUp ↗</a>
+      </div>
+    </div>
+  </div>
+  <div class="tbody">
+    <div class="shot"><a href='evidence/ev_newcourses.jpg' target='_blank'><img src='evidence/ev_newcourses.jpg' alt='screenshot 1'></a></div>
+    <div class="desc"><h3 class='sec'>Problem</h3>
+<p>When a student&#x27;s batch is fully over, the home shows a &quot;Congratulations, course completed&quot; card with a <strong>&quot;See new courses&quot;</strong> button. But it doesn&#x27;t open a catalog of new courses — it just opens the <strong>Course (আমার কোর্স)</strong> tab, which shows the student&#x27;s <strong>old, already-finished enrollments</strong>. For a returning student (say last year&#x27;s SSC &#x27;25), there is no current batch to join anywhere on that screen, so the one button meant to move them forward loops back to dead, already-owned courses.</p>
+<h3 class='sec'>How to reproduce</h3>
+<ol><li>Use an account whose enrolled batch has <strong>fully ended</strong> (e.g. a Class 10 / SSC &#x27;25 account from a past year, now enrolled only in finished batches).</li><li>Open the app and go to <strong>Home (হোম)</strong>.</li><li>On the &quot;course completed&quot; card, tap <strong>&quot;See new courses&quot;</strong>.</li><li>You land on the <strong>Course (কোর্স)</strong> tab — every course is marked &quot;ভর্তি হয়েছো&quot; (already enrolled), all old/finished batches.</li><li>There is no current or joinable batch anywhere — no way forward except searching/buying manually.</li></ol>
+<h3 class='sec'>Who&#x27;s affected</h3>
+<ul><li><strong>Returning / continuing students whose enrolled batch has fully ended</strong> — e.g. last year&#x27;s SSC students who haven&#x27;t moved to this year&#x27;s batch. This is a <strong>high-value re-enrollment group</strong> (past payers), and the one button meant to re-sell them is broken.</li><li><strong>Not affected: brand-new users</strong> — their class is current, so this screen already shows real courses to join.</li></ul>
+<h3 class='sec'>Why it matters</h3>
+<p>This is our clearest re-enrollment moment — a student just finished a course and we&#x27;re inviting them to continue. Instead we send them to a dead end and lose the easiest paid renewal we have, right when the student is most ready to continue.</p>
+<h3 class='sec'>What we should do</h3>
+<p>Make the Course (কোর্স) tab show, in this order:</p>
+<ol><li><strong>Next courses (top):</strong> the course(s) this student should move on to, based on their current/finished enrollment — using the promotion mapping below (current course → proposed next course). Some audiences map to more than one option (e.g. Class 8 → Class 9 Science / Humanities / Commerce), so show all of them as cards they can enroll in.</li><li><strong>Your courses (below):</strong> their existing/finished enrollments as they are now, for reference and continued access.</li></ol>
+<div class='tblwrap'><table><tr><th>Audience</th><th>Current / archived course</th><th>Proposed next course(s)</th></tr><tr><td>Class 5</td><td>ক্লাস ৫ - বৃত্তি + বার্ষিক পরীক্ষা প্রস্তুতি ২০২৬</td><td>ক্লাস ৬ - SSC &#x27;32</td></tr><tr><td>Class 6</td><td>ক্লাস ৬ - SSC &#x27;31</td><td>ক্লাস ৭ - SSC &#x27;31</td></tr><tr><td>Class 7</td><td>ক্লাস ৭ - SSC &#x27;30</td><td>ক্লাস ৮ - SSC &#x27;30</td></tr><tr><td>Class 8</td><td>ক্লাস ৮ - SSC &#x27;29</td><td>ক্লাস ৯ - SSC &#x27;29 বিজ্ঞান / ক্লাস ৯ - SSC &#x27;29 মানবিক / ক্লাস ৯ - SSC &#x27;29 কমন</td></tr><tr><td>Class 9 Science</td><td>ক্লাস ৯ - SSC &#x27;28 বিজ্ঞান</td><td>ক্লাস ১০ - SSC &#x27;28 বিজ্ঞান</td></tr><tr><td>Class 9 Humanities</td><td>ক্লাস ৯ - SSC &#x27;28 মানবিক</td><td>ক্লাস ১০ - SSC &#x27;28 মানবিক</td></tr><tr><td>Class 9 Business studies</td><td>ক্লাস ৯ - SSC &#x27;28 ব্যবসায় শিক্ষা</td><td>ক্লাস ১০ - SSC &#x27;28 ব্যবসায় শিক্ষা</td></tr><tr><td>Class 10 Science</td><td>ক্লাস ১০ - SSC &#x27;27 বিজ্ঞান</td><td>লক্ষ্য জিপিএ-৫ SSC &#x27;27 বিজ্ঞান - রিভিশন + মডেল টেস্ট</td></tr><tr><td>Class 10 Humanities</td><td>ক্লাস ১০ - SSC &#x27;27 মানবিক</td><td>লক্ষ্য জিপিএ-৫ SSC &#x27;27 মানবিক - রিভিশন + মডেল টেস্ট</td></tr><tr><td>Class 10 Business</td><td>ক্লাস ১০ - SSC &#x27;27 কমন</td><td>লক্ষ্য জিপিএ-৫ SSC &#x27;27 কমন - রিভিশন + মডেল টেস্ট</td></tr><tr><td>Class 12 Science · HSC &#x27;27</td><td>HSC &#x27;27 বিজ্ঞান - ২য় বর্ষ প্রস্তুতি</td><td>লক্ষ্য জিপিএ-৫ SSC &#x27;27 বিজ্ঞান - রিভিশন + মডেল টেস্ট; HSC &#x27;27 বোর্ড প্রিপারেশন + মেডিকেল; HSC &#x27;27 বোর্ড প্রিপারেশন + ইঞ্জিনিয়ারিং</td></tr><tr><td>Class 12 Humanities · HSC &#x27;27</td><td>HSC &#x27;27 মানবিক - ২য় বর্ষ প্রস্তুতি</td><td>লক্ষ্য জিপিএ-৫ SSC &#x27;27 মানবিক - রিভিশন + মডেল টেস্ট; HSC &#x27;27 বোর্ড প্রিপারেশন + ভার্সিটি খ</td></tr><tr><td>Class 12 Business Studies · HSC &#x27;27</td><td>HSC &#x27;27 ব্যবসায় শিক্ষা - ২য় বর্ষ প্রস্তুতি</td><td>লক্ষ্য জিপিএ-৫ SSC &#x27;27 কমন - রিভিশন + মডেল টেস্ট; HSC &#x27;27 বোর্ড প্রিপারেশন + ভার্সিটি খ</td></tr><tr><td>Class 11 Science · HSC &#x27;28</td><td>লক্ষ্য জিপিএ-৫ SSC &#x27;26 বিজ্ঞান - রিভিশন + মডেল টেস্ট</td><td>ক্লাস ১১ - HSC &#x27;28 বিজ্ঞান / HSC &#x27;28 - কমপ্লিট প্রিপারেশন বিজ্ঞান</td></tr><tr><td>Class 11 Humanities · HSC &#x27;28</td><td>লক্ষ্য জিপিএ-৫ SSC &#x27;26 মানবিক - রিভিশন + মডেল টেস্ট</td><td>ক্লাস ১১ - HSC &#x27;28 মানবিক / HSC &#x27;28 কমপ্লিট প্রিপারেশন মানবিক</td></tr><tr><td>Class 11 Business Studies · HSC &#x27;28</td><td>লক্ষ্য জিপিএ-৫ SSC &#x27;26 ব্যবসায় শিক্ষা - রিভিশন + মডেল টেস্ট</td><td>ক্লাস ১১ - HSC &#x27;28 (কমন) / HSC &#x27;28 কমপ্লিট প্রিপারেশন (কমন)</td></tr><tr><td>Class 12 Science · HSC &#x27;26</td><td>লক্ষ্য জিপিএ-৫ HSC &#x27;26 বিজ্ঞান - রিভিশন + মডেল টেস্ট</td><td>HSC &#x27;26 ইঞ্জিনিয়ারিং + ঢাবি ক - কমপ্লিট এক্সাম প্রিপারেশন / HSC &#x27;26 মেডিকেল + ডেন্টাল - কমপ্লিট এক্সাম প্রিপারেশন</td></tr><tr><td>Class 12 Humanities · HSC &#x27;26</td><td>লক্ষ্য জিপিএ-৫ HSC &#x27;26 মানবিক - রিভিশন + মডেল টেস্ট</td><td>HSC &#x27;26 ঢাবি খ + ভার্সিটি খ - কমপ্লিট এক্সাম প্রিপারেশন</td></tr><tr><td>Class 12 Business Studies · HSC &#x27;26</td><td>লক্ষ্য জিপিএ-৫ HSC &#x27;26 ব্যবসায় শিক্ষা - রিভিশন + মডেল টেস্ট</td><td>HSC &#x27;26 ঢাবি খ + ভার্সিটি খ - কমপ্লিট এক্সাম প্রিপারেশন</td></tr></table></div>
+<p>This needs two parts:</p>
+<p><strong>Backend (mapping source)</strong></p>
+<ul><li>The current→next mapping changes every academic year, so it should live in the <strong>backend as updatable data</strong> (served through the Explore / course API), not hardcoded in the app — so it can be updated each year <strong>without an app release</strong>.</li><li>Backend returns the proposed next course(s) for a student based on their current/finished enrollment (the audience → proposed-course rules in the table above).</li></ul>
+<p><strong>Android</strong></p>
+<ul><li>The Course (কোর্স) tab renders a <strong>&quot;Next courses&quot;</strong> section on top (from the mapping API), then <strong>&quot;Your courses&quot;</strong> below.</li><li>&quot;See new courses&quot; on the completed-course card lands here.</li><li>Each &quot;Next course&quot; card opens that program&#x27;s enroll / detail screen.</li></ul>
+<p>When done: a returning student taps &quot;See new courses&quot; (or opens the Course tab) and immediately sees the right next batch(es) to join on top, with their old courses below — no dead loop.</p></div>
+  </div>
+</section>
+<section class="ticket" id="t8">
+  <div class="thead">
+    <div class="tnum">8</div>
+    <div class="tmeta">
+      <div class="ttags">[PROD][APP][Home]</div>
+      <h2>Hide the empty &quot;নতুন এক্টিভিটি শীঘ্রই দেখা যাবে&quot; routine card when nothing is scheduled</h2>
+      <div class="trow">
+        <span class="prio" style="color:#354894;background:#E7EAF6;border-color:#CfD6EE">Normal</span>
+        <a class="cu" href="https://app.clickup.com/t/z8zyy1urd5" target="_blank">Open in ClickUp ↗</a>
+      </div>
+    </div>
+  </div>
+  <div class="tbody">
+    <div class="shot"><a href='routine-section-shot.jpeg' target='_blank'><img src='routine-section-shot.jpeg' alt='screenshot 1'></a></div>
+    <div class="desc"><h3 class='sec'>Problem</h3>
+<p>On the Home screen, the রুটিন (Routine) section shows a big empty placeholder — <strong>&quot;নতুন এক্টিভিটি শীঘ্রই দেখা যাবে&quot;</strong> (&quot;new activity will show up soon&quot;) — whenever the day has nothing scheduled. On skill courses like Spoken English, which never have a class routine, this empty card shows <strong>permanently</strong>, taking up the middle of the home for no reason.</p>
+<h3 class='sec'>How to reproduce</h3>
+<ol><li>Open the app with a <strong>paid or trial</strong> account enrolled in a course with no routine for the day — e.g. a skill course like <strong>Spoken English (স্পোকেন ইংলিশ)</strong>.</li><li>Go to the <strong>Home (হোম)</strong> tab.</li><li>In the <strong>রুটিন</strong> section, a day with nothing scheduled shows the empty card <strong>&quot;নতুন এক্টিভিটি শীঘ্রই দেখা যাবে&quot;</strong>.</li><li>On a skill course this never goes away — there is no routine to ever fill it.</li></ol>
+<h3 class='sec'>Who&#x27;s affected</h3>
+<ul><li><strong>Paid and trial students</strong> — the Routine section only shows for them; free / unenrolled users never see it.</li><li><strong>Most visible on skill courses</strong> (e.g. Spoken English) that have no routine at all — it is empty every single day. On academic programs it appears on off-days (days with no class or exam).</li></ul>
+<h3 class='sec'>Why it matters</h3>
+<p>It&#x27;s dead space in the most valuable part of the home — a large empty card that promises activity and delivers nothing, and on skill courses it&#x27;s there permanently.</p>
+<h3 class='sec'>What we should do</h3>
+<ul><li>When a day has nothing scheduled, <strong>don&#x27;t show the empty &quot;নতুন এক্টিভিটি শীঘ্রই দেখা যাবে&quot; card</strong> — hide it so the home flows straight to the next section.</li><li>If the course has <strong>no routine at all</strong> (e.g. a skill course like Spoken English), hide the <strong>whole Routine section</strong> on home — header, day strip and all — since there&#x27;s nothing to navigate to.</li><li>If only the <strong>selected day</strong> is empty but the week still has classes on other days (academic programs), <strong>keep the day strip</strong> so the student can still reach those days; just drop the empty card.</li><li>Leave the Routine section exactly as-is whenever there&#x27;s real content (classes / exams). The full Routine calendar (&quot;সব দেখো&quot;) is not touched.</li><li>Reversible — this only hides an empty state; no data or navigation is removed.</li></ul></div>
+  </div>
+</section>
+<p class="foot">Generated 2026-11-26 · board list 901820156009 · tag “sprint 10”. Click a screenshot to open it full size, or “Open in ClickUp”.</p>
+</div></body></html>

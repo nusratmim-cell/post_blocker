@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shikho Journey Blockers</title>
+<meta name="description" content="Interactive device walkthrough of the curated Shikho journey blockers, with annotations and proposed fixes.">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#FFFFFF; --bg2:#F3F5F9; --card:#FFFFFF; --line:#E1E1E1; --line2:#EFEFEF;
+  --text:#222222; --text2:#626262; --text3:#767676; --title:#232C6A;
+  --primary:#5468FF; --magenta:#E2008D; --navy:#232C6A; --crown:#F4C542;
+  --chip:#EDF6FF; --chipink:#4558E6;
+  --ann:#0F766E; --annbg:#E7F4F2;
+  --stage:#E9ECF3; --pline:#D9DEEA; --ptext:#1B2033; --ptext2:#4D5570;
+  --hdr1:#081448; --hdr2:#132E9C;
+  --bad:#DC2626; --amber:#B45309; --mag:#C0187E; --ok:#16A34A;
+  --s1:#DC2626; --s1b:#FCEBEB; --s2:#B45309; --s2b:#FaefdF; --s3:#C0187E; --s3b:#FCEAF4;
+  --space:#626262; --spaceb:#EFEFEF; --rec:#5468FF; --recb:#EDF0FF;
+  --font:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:var(--font);background:var(--stage);color:var(--ptext);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1240px;margin:0 auto;min-height:100vh;display:grid;grid-template-columns:420px minmax(0,1fr);gap:34px;padding:26px 24px 40px;align-items:start}
+@media(max-width:900px){.wrap{grid-template-columns:1fr;gap:20px}}
+
+/* device */
+.deviceWrap{position:sticky;top:26px;display:flex;flex-direction:column;align-items:center;gap:14px}
+@media(max-width:900px){.deviceWrap{position:static}}
+.phone{width:384px;max-width:90vw;background:#0d1330;border-radius:46px;padding:12px;box-shadow:0 20px 50px rgb(16 24 64 / .28);position:relative}
+.phone::before{content:"";position:absolute;top:20px;left:50%;transform:translateX(-50%);width:110px;height:26px;background:#0d1330;border-radius:0 0 16px 16px;z-index:3}
+.screen{position:relative;border-radius:30px;overflow:hidden;background:var(--bg2);aspect-ratio:1080/2400}
+.screen img{display:block;width:100%;height:100%;object-fit:cover}
+.noimg{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:30px;background:linear-gradient(160deg,#101a55,#2a39a8);color:#fff}
+.noimg b{font-size:19px;letter-spacing:-.01em}.noimg span{font-size:13px;color:#c7cdf5;max-width:22ch}
+/* annotation highlight */
+.hl{position:absolute;border:2.5px dashed var(--ann);border-radius:10px;box-shadow:0 0 0 2000px rgb(15 118 110 / .12);animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 2000px rgb(15 118 110 / .10)}50%{box-shadow:0 0 0 2000px rgb(15 118 110 / .20)}}
+.hl .pin{position:absolute;top:-15px;left:-15px;width:30px;height:30px;border-radius:50%;background:var(--ann);color:#fff;display:grid;place-items:center;font-weight:800;font-size:14px;border:2px solid #fff;box-shadow:0 2px 8px rgb(15 118 110 / .5)}
+.enlarge{border:1px solid var(--pline);background:#fff;color:var(--ptext2);font-weight:600;font-size:12.5px;padding:7px 14px;border-radius:20px}
+.enlarge:hover{border-color:var(--primary);color:var(--primary)}
+.stepper{display:flex;align-items:center;gap:10px}
+.stepper button{width:40px;height:40px;border-radius:50%;border:1px solid var(--pline);background:#fff;color:var(--navy);font-size:18px;font-weight:700;display:grid;place-items:center}
+.stepper button:hover{border-color:var(--primary);color:var(--primary)}
+.stepper button:disabled{opacity:.35;cursor:default}
+.stepper .ct{font-size:13px;font-weight:700;color:var(--ptext2);min-width:58px;text-align:center}
+
+/* panel */
+.panel{background:var(--card);border:1px solid var(--pline);border-radius:22px;overflow:hidden;box-shadow:0 8px 30px rgb(16 24 64 / .07)}
+.phead{background:linear-gradient(120deg,var(--hdr1),var(--hdr2) 85%);color:#fff;padding:22px 24px}
+.phead .k{font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#aeb8f3}
+.phead h1{margin:7px 0 6px;font-size:28px;letter-spacing:-.03em;line-height:1.05}
+.phead p{margin:0;font-size:13.5px;color:#d9ddf6;max-width:46ch;line-height:1.5}
+/* nav chips */
+.navbar{display:flex;gap:7px;overflow-x:auto;padding:14px 18px;border-bottom:1px solid var(--line2);background:var(--bg2)}
+.navbar::-webkit-scrollbar{height:0}
+.nchip{flex:0 0 auto;border:1px solid var(--line);background:#fff;color:var(--text2);font-family:inherit;font-size:12.5px;font-weight:700;padding:7px 13px;border-radius:20px;white-space:nowrap}
+.nchip[aria-current="true"]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.nchip .d{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;vertical-align:middle}
+
+.body{padding:22px 26px 28px}
+.eyebrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.sev{font-size:12px;font-weight:800;letter-spacing:.03em;padding:5px 11px;border-radius:7px}
+.sev.s1{background:var(--s1b);color:var(--s1)}.sev.s2{background:var(--s2b);color:var(--s2)}
+.sev.s3{background:var(--s3b);color:var(--s3)}.sev.space{background:var(--spaceb);color:var(--space)}.sev.rec{background:var(--recb);color:var(--rec)}
+.scope{font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text3)}
+.body h2{margin:0 0 10px;font-size:25px;letter-spacing:-.02em;line-height:1.15;color:var(--title)}
+.what{margin:0;font-size:15.5px;line-height:1.6;color:var(--text)}
+.sec-lbl{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin:22px 0 9px}
+.steps{list-style:none;counter-reset:s;margin:0;padding:0}
+.steps li{counter-increment:s;position:relative;padding:.1rem 0 .6rem 2rem;font-size:14.5px;color:var(--text);line-height:1.5}
+.steps li::before{content:counter(s);position:absolute;left:0;top:.05rem;width:1.45rem;height:1.45rem;border-radius:50%;background:var(--chip);color:var(--chipink);display:grid;place-items:center;font-size:.8rem;font-weight:800}
+.impact{background:#FBF7FB;border-left:4px solid var(--mag);border-radius:0 9px 9px 0;padding:11px 15px;font-size:14.5px;color:#4a2238;line-height:1.55}
+.find.rec .impact{border-color:var(--rec);background:#F2F4FF;color:#28306e}
+.find.crit .impact{border-color:var(--s1);background:#FCF1F1;color:#6d1f1f}
+/* proposed fix mini phone */
+.fix{margin-top:8px;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--bg2)}
+.fix .top{background:#E7F5EC;color:var(--ok);font-weight:800;font-size:13px;padding:9px 14px;border-bottom:1px solid #cdeccf;display:flex;align-items:center;gap:7px}
+.fix .scr{padding:14px 14px 5px}
+.frow{background:#fff;border:1px solid var(--line);border-radius:11px;padding:11px 13px;margin-bottom:9px;font-size:14px;color:var(--text);font-weight:500}
+.frow.ok{background:#E7F5EC;border-color:#b6e2c1;color:#15603a;font-weight:700}
+.fix .cap{padding:4px 14px 14px;font-size:13.5px;color:var(--text2);line-height:1.5}
+
+dialog{border:0;border-radius:16px;max-width:min(94vw,420px);padding:10px;background:#fff;box-shadow:0 20px 60px rgb(10 20 60 / .4)}
+dialog::backdrop{background:rgb(10 12 23 / .72)}
+dialog img{display:block;max-width:100%;max-height:84vh;border-radius:10px}
+.dbar{display:flex;justify-content:flex-end;margin-bottom:6px}
+.dbar button{border:1px solid var(--line);background:var(--bg2);border-radius:8px;padding:5px 12px;font-size:13px}
+.credit{text-align:center;font-size:11.5px;color:var(--ptext2);margin-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="deviceWrap">
+    <div class="phone"><div class="screen" id="screen"></div></div>
+    <button class="enlarge" id="enlarge">⤢ Enlarge screen</button>
+    <div class="stepper">
+      <button id="prev" aria-label="Previous">‹</button>
+      <span class="ct" id="counter">1 / 16</span>
+      <button id="next" aria-label="Next">›</button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="phead">
+      <div class="k">Shikho SuperApp · Journey blockers</div>
+      <h1>Trial → First lesson, and what breaks it</h1>
+      <p>The curated shortlist, walked through on the device. Tap a chip or use ‹ › to step. The dashed ring marks the problem; the green card shows the proposed fix.</p>
+    </div>
+    <div class="navbar" id="navbar"></div>
+    <div class="body" id="body"></div>
+  </div>
+</div>
+
+<dialog id="lb"><div class="dbar"><button onclick="lb.close()">Close ✕</button></div><img id="lbimg" alt=""></dialog>
+
+<script>
+const SEVN={s1:'S1 · CRITICAL',s2:'S2 · HIGH',s3:'S3 · MEDIUM',space:'◻ EMPTY SPACE',rec:'★ RECOMMENDATION'};
+const SCOPE={app:'All cohorts',fresh:'Fresh',trial:'Trial',paid:'Paid',free:'Free',product:'Product'};
+const SEVC={s1:'var(--s1)',s2:'var(--s2)',s3:'var(--s3)',space:'var(--space)',rec:'var(--rec)'};
+
+// hl = highlight rect as % of screen {x,y,w,h}
+const F=[
+ {sev:'s2',scope:'app',title:'“View Certificate” button is dead',img:'ev_cert.jpg',hl:{x:4,y:30,w:92,h:10},
+  what:'The prominent “view / download / share certificate” card on home is unresponsive — both the card body and its arrow do nothing. Confirmed on paid and free.',
+  steps:['Go to home.','Tap the certificate card or its arrow.','No navigation, no feedback.'],
+  impact:'A promised, prominent CTA leads nowhere — for every cohort.',
+  fix:{cap:'Wire the card to the certificate screen.',rows:[{t:'🎓 Tap → Certificate',ok:1},{t:'Download · Share'}]}},
+ {sev:'s2',scope:'app',title:'Entry popup gauntlet',img:'ev_location.jpg',hl:{x:8,y:54,w:84,h:16},
+  what:'On home entry the user hits three stacked interruptions: a notification-permission dialog, a full-screen promo, and a “Share location for video quality” prompt that offers only “Proceed”.',
+  steps:['Open the app.','Dismiss the notification dialog.','Dismiss the promo.','Face the misleading “Share location” prompt.'],
+  impact:'Everyone fights three interruptions to reach their own home; the location reason is misleading.',
+  fix:{cap:'One honest prompt, with a Skip; drop the fake “for video quality” reason.',rows:[{t:'Enable notifications?'},{t:'Allow      ·      Skip',ok:1}]}},
+ {sev:'s3',scope:'app',title:'“Premium” badge shown to lapsed buyers',img:'ev_congrats.jpg',hl:{x:4,y:11,w:27,h:6},
+  what:'The gold “Premium” crown is shown to anyone who has ever purchased a Shikho course — even after that access has expired and they are not currently a paying user. Lapsed buyers still wear “Premium”.',
+  steps:['Open an account that once bought a course but has no active paid enrollment now.','Look at the home header / avatar.','The Premium badge is still shown.'],
+  impact:'Tied to lifetime purchase history, not current status — it misleads users and dilutes the real upgrade.',
+  fix:{cap:'Tie the badge to a currently-active paid enrollment.',rows:[{t:'Active paid → “Premium” ✓',ok:1},{t:'Expired / never → “Upgrade”'}]}},
+ {sev:'s1',scope:'fresh',title:'Inescapable forced tour',img:'ev_tour.jpg',hl:{x:9,y:58,w:82,h:9},
+  what:'After trial activation a “Start tour” modal has no skip and no close. Back and outside-tap both fail. Only “Start tour” works. Reproduced identically on HSC — app-wide across classes.',
+  steps:['Activate the trial.','The tour modal appears.','Back & outside-tap do nothing.','Forced to Start, then decline at step 1.'],
+  impact:'A brand-new, high-intent student is trapped in a tour with no escape.',
+  fix:{cap:'Give the tour a Skip and a ✕.',rows:[{t:'Start tour        ✕',ok:1},{t:'Skip for now',ok:1}]}},
+ {sev:'s2',scope:'fresh',title:'Mandatory school hard-wall',img:'ev_wall.jpg',hl:{x:3,y:23,w:94,h:72},
+  what:'The first home view is covered by a school-selection sheet that cannot be dismissed or skipped.',
+  steps:['Finish registration and reach home.','A school sheet covers the home.','No skip — you must select a school.'],
+  impact:'A hard gate on the very first home view, before any value is shown.',
+  fix:{cap:'Make the school optional, with a Skip.',rows:[{t:'Your school (optional)'},{t:'Skip for now',ok:1}]}},
+ {sev:'s3',scope:'fresh',title:'Friction-to-dismiss tour exit',img:'ev_tourexit.jpg',hl:{x:22,y:90,w:56,h:7},
+  what:'The “exit tutorial?” confirmation demotes exit to a small text link while “keep watching” is the prominent button. The same demoted-leave pattern appears on quiz-exit too — it is systemic.',
+  steps:['Start the forced tour.','Attempt to exit.','Leaving is the harder, smaller choice.'],
+  impact:'Dark-pattern friction on top of an already-forced tour.',
+  fix:{cap:'Make Exit the primary button.',rows:[{t:'Exit tour',ok:1},{t:'Keep watching'}]}},
+ {sev:'s3',scope:'trial',title:'Trial user wears a “Premium” badge',img:'ev_trialprem.jpg',hl:{x:4,y:11,w:27,h:6},
+  what:'A trial (non-paying) account displays the gold “Premium” badge on its home, blurring the line between trial and paid.',
+  steps:['Activate a trial.','Open the trial home.','The Premium badge is shown.'],
+  impact:'Misleading status; if trial users are “Premium”, the paid upgrade loses meaning.',
+  fix:{cap:'Show a “Trial” chip with days left, not “Premium”.',rows:[{t:'Trial · 2 days left',ok:1}]}},
+ {sev:'s3',scope:'trial',title:'Every recorded class is tagged “Missed”',img:'ev_missed.jpg',hl:{x:79,y:35,w:19,h:56},
+  what:'In the trial course, each recorded lecture is labelled “Missed”, framing a brand-new student as already behind.',
+  steps:['Trial → Course → subject → chapter.','View the class list.','All are tagged “Missed”.'],
+  impact:'A demotivating first impression — the product greets a newcomer with failure.',
+  fix:{cap:'Label recordings “New / Available”, not “Missed”.',rows:[{t:'New · Available',ok:1}]}},
+ {sev:'s2',scope:'trial',title:'Inherits the forced tour + popup gauntlet',img:'',
+  what:'The trial path runs through the same inescapable forced tour and three-popup gauntlet documented in App-wide and Fresh.',
+  steps:['Activate trial.','Hit the forced tour.','Hit the entry popup gauntlet.'],
+  impact:'The trial’s first impression is dominated by shared entry blockers, not the product.',
+  fix:{cap:'Fixing the shared entry blockers fixes this too.',rows:[{t:'See App-wide + Fresh fixes',ok:1}]}},
+ {sev:'s3',scope:'paid',title:'“Notification” menu row bounces back',img:'ev_notif.jpg',hl:{x:5,y:30,w:90,h:8},
+  what:'Profile → Notification repeatedly returns to the home dashboard with no notifications screen (4 attempts), while “Settings” in the same sheet works.',
+  steps:['Tap the profile avatar.','Tap “Notification”.','The sheet closes to home — no list opens.'],
+  impact:'A broken path to “see your latest updates”.',
+  fix:{cap:'Open the notifications list.',rows:[{t:'🔔 Notifications',ok:1},{t:'Your latest updates'}]}},
+ {sev:'s3',scope:'free',title:'False “Congratulations! Course completed!”',img:'ev_congrats.jpg',hl:{x:6,y:32,w:88,h:7},
+  what:'The home shows a celebratory card — “Congratulations! You successfully finished the whole course” — while the course progress directly below reads 0%.',
+  steps:['Open the unpaid home.','Read the “Course completed!” banner.','Note the 0% progress beneath it.'],
+  impact:'Telling a student who did nothing that they “completed the course” is misleading and hollow.',
+  fix:{cap:'Honest state: invite them to start.',rows:[{t:'Start your course →',ok:1}]}},
+ {sev:'s3',scope:'free',title:'Stranded on an expired batch',img:'ev_expired.jpg',hl:{x:4,y:16,w:92,h:12},
+  what:'The only “course” is an expired Model Test — “you missed the test”, 0 questions, no path forward.',
+  steps:['Unpaid → course → Model Test.','“You missed the test”.','0 questions to attempt.'],
+  impact:'An active student has no visible path to current content except buying.',
+  fix:{cap:'Prompt them to join the current batch.',rows:[{t:'Join the current batch',ok:1}]}},
+ {sev:'s2',scope:'free',title:'“See new courses” is a dead loop',img:'ev_newcourses.jpg',hl:{x:3,y:15,w:30,h:5},
+  what:'From the “course completed” card, “See new courses” does not open a catalog — it opens “My Courses”, showing the same expired enrollments. (Scope: hits already-enrolled accounts; a brand-new fresh user does get a working catalog.)',
+  steps:['Unpaid home → “See new courses”.','Lands on “My Courses”.','Only old, expired courses — no new batch.'],
+  impact:'No path to a current batch — the one forward-looking CTA loops back to dead content.',
+  fix:{cap:'Link to a catalog of current batches to enrol in.',rows:[{t:'Browse current courses',ok:1},{t:'Current batches'}]}},
+ {sev:'space',scope:'app',title:'Course Progress 0% — with a green “complete” tick',img:'ev_zeropct.jpg',hl:{x:4,y:62,w:92,h:9},
+  what:'The home “Course Progress” card shows 0% yet carries a green ✓ and a “teaching done” tag — a contradiction on a large card.',
+  steps:['Open home.','Read the “Course Progress” card.','0% with a green ✓ and “completed” framing.'],
+  impact:'Confusing and hollow — the headline progress card contradicts itself.',
+  fix:{cap:'0% should read “Not started” — no false ✓.',rows:[{t:'Not started · 0%',ok:1}]}},
+ {sev:'space',scope:'app',title:'Empty Routine on the home',img:'ev_emptyrt.jpg',hl:{x:5,y:36,w:90,h:14},
+  what:'The home Routine (and “See all”) shows “your routine will be added soon” — an empty calendar in the middle of home.',
+  steps:['Open home → Routine.','Tap “See all”.','Empty-state message, no entries.'],
+  impact:'A large, central block that is blank for most users.',
+  fix:{cap:'Move Routine to Explore (see Recommendation).',rows:[{t:'Routine → Explore',ok:1}]}},
+ {sev:'rec',scope:'product',title:'Move Routine from Home → Explore',img:'ev_emptyrt.jpg',hl:{x:5,y:36,w:90,h:14},
+  what:'The Routine/calendar sits on Home, where it is empty for most users and pushes real content down. Explore already asks “what do you want to study today?” — the natural planning surface.',
+  steps:['Home is the “keep learning” surface; a blank calendar competes with it.','Explore already frames planning.','Relocating declutters Home and unifies plan + discover.'],
+  impact:'A cleaner, content-first Home; Routine gains a purposeful place in Explore.',
+  fix:{cap:'Explore becomes plan + discover in one place.',rows:[{t:'Explore · Today’s routine',ok:1},{t:'+ subject discovery'}]}},
+];
+
+const DIR='evidence/';
+let cur=0;
+const screen=document.getElementById('screen'), body=document.getElementById('body'), navbar=document.getElementById('navbar'),
+      counter=document.getElementById('counter'), prev=document.getElementById('prev'), next=document.getElementById('next');
+
+F.forEach((f,i)=>{
+  const b=document.createElement('button'); b.className='nchip'; b.innerHTML=`<span class="d" style="background:${SEVC[f.sev]}"></span>${i+1}`;
+  b.title=f.title; b.addEventListener('click',()=>go(i)); navbar.appendChild(b);
+});
+
+function render(){
+  const f=F[cur];
+  // device screen
+  if(f.img){
+    screen.innerHTML=`<img src="${DIR}${f.img}" alt="${f.title}">`+
+      `<div class="hl" style="left:${f.hl.x}%;top:${f.hl.y}%;width:${f.hl.w}%;height:${f.hl.h}%"><span class="pin">!</span></div>`;
+  } else {
+    screen.innerHTML=`<div class="noimg"><b>${f.title}</b><span>Shares the App-wide + Fresh entry blockers — see those screens.</span></div>`;
+  }
+  // panel
+  const crit=f.sev==='s1', rec=f.sev==='rec';
+  body.className='body find'+(crit?' crit':'')+(rec?' rec':'');
+  body.innerHTML=`
+    <div class="eyebrow"><span class="sev ${f.sev}">${SEVN[f.sev]}</span><span class="scope">${SCOPE[f.scope]||''}</span></div>
+    <h2>${f.title}</h2>
+    <p class="what">${f.what}</p>
+    <div class="sec-lbl">${rec?'Rationale':f.sev==='space'?'Where it appears':'Steps to reproduce'}</div>
+    <ol class="steps">${f.steps.map(s=>`<li>${s}</li>`).join('')}</ol>
+    <div class="sec-lbl">${rec?'Expected benefit':f.sev==='space'?'Opportunity':'Impact'}</div>
+    <div class="impact">${f.impact}</div>
+    <div class="sec-lbl">Proposed fix</div>
+    <div class="fix"><div class="top">✅ Proposed</div><div class="scr">${f.fix.rows.map(r=>`<div class="frow ${r.ok?'ok':''}">${r.t}</div>`).join('')}</div><div class="cap">${f.fix.cap}</div></div>`;
+  counter.textContent=`${cur+1} / ${F.length}`;
+  prev.disabled=cur===0; next.disabled=cur===F.length-1;
+  [...navbar.children].forEach((c,i)=>c.setAttribute('aria-current', i===cur?'true':'false'));
+  const act=navbar.children[cur]; if(act) act.scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'});
+}
+function go(i){cur=Math.max(0,Math.min(F.length-1,i)); render();}
+prev.addEventListener('click',()=>go(cur-1));
+next.addEventListener('click',()=>go(cur+1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')go(cur-1);if(e.key==='ArrowRight')go(cur+1);});
+document.getElementById('enlarge').addEventListener('click',()=>{const f=F[cur]; if(!f.img)return; document.getElementById('lbimg').src=DIR+f.img; document.getElementById('lb').showModal();});
+render();
+</script>
+</body>
+</html>

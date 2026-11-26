@@ -1,0 +1,242 @@
+<title>Shikho Journey Audit</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap">
+<style>
+/* Layout: segment rail up top, a phone-frame "device" stage beside a blocker-callout panel */
+:root{
+  color-scheme: light;
+  --ground:#F9F8F5; --paper:#FFFFFF; --sunken:#F1EFEA;
+  --ink:#1A1D26; --ink-2:#4B5060; --ink-3:#7C8090;
+  --line:#E3E0D8; --line-2:#EEECE6;
+  --navy:#354894; --navy-soft:#ECEEF8; --magenta:#C2257F; --magenta-soft:#FBEAF3;
+  --crit-fg:#B8304B; --crit-bg:#FAE3E8;
+  --high-fg:#9A6A06; --high-bg:#FAEFD3;
+  --med-fg:#3B4A86; --med-bg:#ECEEF8;
+  --good-fg:#2C7A4B; --good-bg:#E3F1E8;
+  --sans:'Inter',system-ui,sans-serif;
+  --head:'Space Grotesk','Inter',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+body{
+  background:var(--ground); color:var(--ink); font-family:var(--sans);
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:24px 40px; line-height:1.5;
+}
+.wrap{max-width:1080px;margin:0 auto}
+header h1{font-family:var(--head);font-weight:700;font-size:clamp(1.5rem,4vw,2.1rem);letter-spacing:-.02em;margin:0 0 6px;text-wrap:balance}
+header p{color:var(--ink-2);margin:0;max-width:60ch;font-size:.95rem}
+.badge-shikho{display:inline-block;font-family:var(--head);font-weight:600;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--magenta);background:var(--magenta-soft);padding:3px 9px;border-radius:999px;margin-bottom:12px}
+
+/* stat strip */
+.stats{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 22px}
+.stat{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:9px 13px;flex:1 1 150px;min-width:0}
+.stat b{font-family:var(--head);font-weight:700;font-size:1.15rem;color:var(--navy);display:block;line-height:1.1;font-variant-numeric:tabular-nums}
+.stat span{font-size:.76rem;color:var(--ink-3)}
+
+/* segment tabs */
+.segtabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.seg{appearance:none;cursor:pointer;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:10px 14px;text-align:left;font-family:var(--sans);min-width:0;flex:1 1 150px;transition:border-color .12s,background .12s}
+.seg:hover{border-color:var(--navy)}
+.seg[aria-selected="true"]{background:var(--navy);border-color:var(--navy)}
+.seg[aria-selected="true"] .seg-name,.seg[aria-selected="true"] .seg-sub{color:#fff}
+.seg[aria-selected="true"] .seg-count{background:rgba(255,255,255,.22);color:#fff}
+.seg-name{font-family:var(--head);font-weight:600;font-size:.95rem;color:var(--ink);display:flex;align-items:center;gap:7px;justify-content:space-between}
+.seg-count{font-size:.7rem;background:var(--sunken);color:var(--ink-3);padding:1px 7px;border-radius:999px;font-variant-numeric:tabular-nums}
+.seg-sub{font-size:.75rem;color:var(--ink-3);margin-top:3px}
+.dot-sev{width:8px;height:8px;border-radius:50%;flex:none}
+
+/* finding banner */
+.finding{background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--navy);border-radius:12px;padding:13px 16px;margin-bottom:18px;font-size:.92rem;color:var(--ink-2)}
+.finding b{color:var(--ink)}
+
+/* stage */
+.stage{display:grid;grid-template-columns:minmax(240px,300px) 1fr;gap:26px;align-items:start}
+@media(max-width:680px){.stage{grid-template-columns:1fr;gap:18px}}
+
+/* phone */
+.device{display:flex;flex-direction:column;align-items:center;gap:14px}
+.phone{position:relative;height:clamp(380px,62vh,600px);aspect-ratio:1080/2400;max-width:100%;background:#0d0f16;border-radius:30px;padding:9px;box-shadow:0 14px 40px -12px rgba(26,29,38,.4);flex:none}
+.phone::after{content:"";position:absolute;top:15px;left:50%;transform:translateX(-50%);width:34%;height:5px;background:#272a33;border-radius:999px}
+.screen{width:100%;height:100%;border-radius:22px;overflow:hidden;background:#fff}
+.screen img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+.navrow{display:flex;align-items:center;gap:12px}
+.nav{appearance:none;cursor:pointer;border:1px solid var(--line);background:var(--paper);color:var(--ink);width:42px;height:42px;border-radius:50%;font-size:1.1rem;display:grid;place-items:center;transition:border-color .12s}
+.nav:hover:not(:disabled){border-color:var(--navy);color:var(--navy)}
+.nav:disabled{opacity:.35;cursor:default}
+.dots{display:flex;gap:6px;align-items:center}
+.pdot{width:8px;height:8px;border-radius:50%;background:var(--line);border:none;padding:0;cursor:pointer}
+.pdot[aria-current="true"]{background:var(--navy);width:22px;border-radius:999px}
+.counter{font-size:.78rem;color:var(--ink-3);font-variant-numeric:tabular-nums;min-width:62px;text-align:center}
+
+/* callout panel */
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:20px;min-width:0}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}
+.chip{font-size:.72rem;font-weight:600;padding:3px 10px;border-radius:999px;letter-spacing:.01em}
+.chip.sev-critical{color:var(--crit-fg);background:var(--crit-bg)}
+.chip.sev-high{color:var(--high-fg);background:var(--high-bg)}
+.chip.sev-med{color:var(--med-fg);background:var(--med-bg)}
+.chip.sev-good{color:var(--good-fg);background:var(--good-bg)}
+.chip.kind{color:var(--ink-2);background:var(--sunken)}
+.panel h2{font-family:var(--head);font-weight:700;font-size:1.3rem;letter-spacing:-.01em;margin:0 0 10px;text-wrap:balance}
+.panel .desc{color:var(--ink-2);font-size:.98rem;margin:0 0 16px}
+.panel .step-of{font-size:.75rem;color:var(--ink-3);text-transform:uppercase;letter-spacing:.07em;font-weight:600;margin-bottom:8px}
+.hint{display:flex;gap:9px;align-items:flex-start;font-size:.82rem;color:var(--ink-3);border-top:1px solid var(--line-2);padding-top:14px}
+kbd{font-family:var(--head);font-size:.72rem;background:var(--sunken);border:1px solid var(--line);border-radius:6px;padding:1px 6px;color:var(--ink-2)}
+
+/* legend */
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:26px;padding-top:18px;border-top:1px solid var(--line);font-size:.78rem;color:var(--ink-3)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+footer{margin-top:28px;font-size:.78rem;color:var(--ink-3)}
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="badge-shikho">Shikho · UX friction audit</span>
+    <h1>What each type of user actually faces</h1>
+    <p>A click-through of the real app, captured live on-device across five user segments. Use the segment tabs, then step through each journey. Every screen is a real screenshot; the panel names the blocker that fires and how bad it is.</p>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><b>~2,000/day</b><span>fresh sign-ups that never enrol</span></div>
+    <div class="stat"><b>68%</b><span>paid users with incomplete profiles</span></div>
+    <div class="stat"><b>42%</b><span>users carrying 2+ enrolments</span></div>
+    <div class="stat"><b>~99%</b><span>active payers exposed to a dead default course</span></div>
+    <div class="stat"><b>81%</b><span>"active paid" enrolments already expired</span></div>
+  </div>
+
+  <div class="segtabs" id="segtabs" role="tablist" aria-label="User segments"></div>
+  <div class="finding" id="finding"></div>
+
+  <div class="stage">
+    <div class="device">
+      <div class="phone"><div class="screen"><img id="shot" alt=""></div></div>
+      <div class="navrow">
+        <button class="nav" id="prev" aria-label="Previous screen">&#8249;</button>
+        <div class="dots" id="dots"></div>
+        <button class="nav" id="next" aria-label="Next screen">&#8250;</button>
+      </div>
+      <div class="counter" id="counter"></div>
+    </div>
+    <aside class="panel">
+      <div class="step-of" id="stepof"></div>
+      <div class="chips" id="chips"></div>
+      <h2 id="title"></h2>
+      <p class="desc" id="desc"></p>
+      <div class="hint">Use <kbd>&larr;</kbd> <kbd>&rarr;</kbd> to step through, or tap a segment above to switch journey.</div>
+    </aside>
+  </div>
+
+  <div class="legend">
+    <span><span class="dot-sev" style="background:var(--crit-fg)"></span> Critical — blocks the journey</span>
+    <span><span class="dot-sev" style="background:var(--high-fg)"></span> High — serious friction</span>
+    <span><span class="dot-sev" style="background:var(--med-fg)"></span> Medium — adds drag</span>
+    <span><span class="dot-sev" style="background:var(--good-fg)"></span> Works well</span>
+  </div>
+  <footer>Captured live on a Pixel 7 · Shikho Android SuperApp · 23 of 39 screens shown. Data stats from the Insight warehouse.</footer>
+</div>
+
+<script>
+const SEV={critical:"var(--crit-fg)",high:"var(--high-fg)",med:"var(--med-fg)",good:"var(--good-fg)"};
+const SEGMENTS=[
+ {id:"fresh",name:"Fresh",sub:"Brand-new sign-up",worst:"critical",
+  finding:"<b>A new learner clears ~9 screens, a forced OTP + PIN, and a trap-prone hard wall — and is rewarded with a sales page, not a lesson.</b> This is the mechanism behind ~2,000 sign-ups a day that never enrol.",
+  steps:[
+   {img:"f1",t:"Forced OTP, 2-min lock",sev:"med",kind:"Verification",d:"4-digit OTP, and resend is locked behind a 2:00 countdown. If the SMS is slow, a brand-new user hits a 2-minute dead stop on screen one."},
+   {img:"f2",t:"5 mandatory fields",sev:"med",kind:"Over-collection",d:"Name, gender, class — and picking Class 10 cascades into SSC batch-year + group. All required before the user sees any value."},
+   {img:"f3",t:"Home hard-walled",sev:"critical",kind:"Hard wall",d:"The instant home loads, a mandatory school sheet covers it. No skip, no X — back and outside-tap don't close it."},
+   {img:"f4",t:"Search dead-ends",sev:"critical",kind:"Broken gate",d:"Typing a school name returns nothing selectable and Save stays disabled. From the user's seat, they're simply stuck on screen one."},
+   {img:"f5",t:"Results hidden by keyboard",sev:"critical",kind:"Broken gate",d:"Results DO exist — but they render in the thin sliver behind the keyboard, nearly impossible to see or tap. The wall only clears if you blind-tap one."},
+   {img:"f6",t:"Home is a sales page",sev:"high",kind:"Paywall",d:"Past the wall there's no free content up front — just a 3-day-trial promo and buy cards (৳5,500). The Explore tab stays hidden until you enrol."},
+   {img:"f7",t:"AI is the one free value",sev:"good",kind:"Works well",d:"Shikho AI doubt-solving is usable immediately, no entry paywall — the only instant value a fresh user actually gets."},
+   {img:"f8",t:"Telesales funnel",sev:"med",kind:"Promo",d:"Starting the trial tells the user 'to enrol, call 16780'. Conversion is routed through a phone-sales line, not just in-app checkout."},
+   {img:"f9",t:"Conversion re-fires the gauntlet",sev:"high",kind:"Nag stack",d:"Activating the trial immediately throws a forced guided-tour modal plus an 'add profile photo' nag — before any content. The Explore tab appears only now."}
+  ]},
+ {id:"trial",name:"Trial",sub:"Active 3-day trial",worst:"high",
+  finding:"<b>An active trial grants real, full content access — but the home is a gauntlet</b> of forced tour, friction-to-dismiss, and a pinned paywall banner before you reach it.",
+  steps:[
+   {img:"t1",t:"Forced tour overlay",sev:"high",kind:"Nag",d:"Home opens under a 'Discover Shikho' guided-tour coach-mark the user must deal with first."},
+   {img:"t2",t:"Friction to dismiss",sev:"med",kind:"Dark pattern",d:"Declining the tour throws a confirm modal — with the actual exit demoted to a small text link and 'keep watching' emphasised."},
+   {img:"t3",t:"Pinned paywall + fake Premium",sev:"med",kind:"Paywall",d:"A trial-expiry banner is pinned to the home, and the trial user wears a 'Premium' badge — misleading, since they haven't paid."},
+   {img:"t4",t:"Ongoing vs ended trials",sev:"med",kind:"Paywall",d:"Courses are tagged 'free learning ongoing' vs 'free learning ended'. Expired ones only offer 'view details' → enrol."},
+   {img:"t5",t:"Content plays, full access",sev:"good",kind:"Works well",d:"Inside the live trial, lessons play exactly like paid — no watch-limit, no mid-video upsell, no lock. The trial is real full access, time-boxed."}
+  ]},
+ {id:"paid",name:"Paid",sub:"Active subscription",worst:"high",
+  finding:"<b>A well-set-up paid account works cleanly — the damage is enrolment sprawl and false-empty content states at the edges.</b>",
+  steps:[
+   {img:"p1",t:"bKash nag + wrong class",sev:"med",kind:"Nag",d:"A 'save your bKash number' upsell sits on a paid home, and the program selector reads Class 10 while the greeting says the student is Class 9."},
+   {img:"p2",t:"Enrolment sprawl",sev:"high",kind:"Confusion",d:"'My Courses' shows 3+ near-identical 'Class 9/10 SSC 28 Science' cards. A paying student genuinely can't tell which one is theirs."},
+   {img:"p3",t:"False-empty quarter",sev:"high",kind:"Broken gate",d:"A running quarter of a subject the student paid for reports 'chapters for this quarter haven't been added yet.'"},
+   {img:"p4",t:"…but the content exists",sev:"high",kind:"Broken gate",d:"One tap over, Animated Lessons has a full 18-chapter list. The empty state was a lie — the paid student was told there's nothing when there's plenty."},
+   {img:"p5",t:"Clean when set up right",sev:"good",kind:"Works well",d:"A tidy paid account — matching program, complete profile — sails through with a populated home and clean playback. Proof the blockers are state-driven, not universal."}
+  ]},
+ {id:"incomplete",name:"Paid · incomplete",sub:"Payer, messy data",worst:"critical",
+  finding:"<b>The betrayal case: a paying student is dropped onto a dead course and told to buy a new one — while 5+ active courses hide behind a switcher.</b> ~99% of active payers are exposed to this.",
+  steps:[
+   {img:"i1",t:"Expired default program",sev:"critical",kind:"Wrong default",d:"The app defaults a paying HSC'27 student onto a finished HSC'26 course → 'Congratulations, course completed — buy a new one.' On open, before anything else."},
+   {img:"i2",t:"Her real courses are hidden",sev:"critical",kind:"Wrong default",d:"The course switcher reveals 5+ active HSC'27 courses she's actually enrolled in — all buried one tap away behind the dead default."},
+   {img:"i3",t:"Pre-checked consent",sev:"low",kind:"Dark pattern",d:"Login pre-ticks the privacy + refund consent box, so agreement is manufactured rather than given — on every login."}
+  ]},
+ {id:"returning",name:"Returning",sub:"Logs back in",worst:"med",
+  finding:"<b>Logging back in is a full restart into the new-user intro — and the home gauntlet re-fires on every re-entry.</b>",
+  steps:[
+   {img:"r1",t:"Logout → new-user carousel",sev:"med",kind:"Friction",d:"Logout restarts the whole app and drops the returning user into the same 3-slide new-user intro carousel — no 'welcome back' path. Pre-checked consent reappears at phone entry, and the home nags re-fire on re-entry."}
+  ]}
+];
+
+let si=0, pi=0;
+const $=id=>document.getElementById(id);
+
+function sevLabel(s){return {critical:"Critical",high:"High",med:"Medium",good:"Works well",low:"Low"}[s]||s}
+function sevClass(s){return s==="low"?"sev-med":"sev-"+s}
+
+function buildTabs(){
+  const w=$("segtabs"); w.innerHTML="";
+  SEGMENTS.forEach((seg,i)=>{
+    const b=document.createElement("button");
+    b.className="seg"; b.setAttribute("role","tab");
+    b.setAttribute("aria-selected", i===si?"true":"false");
+    b.innerHTML=`<span class="seg-name"><span style="display:flex;align-items:center;gap:7px"><span class="dot-sev" style="background:${SEV[seg.worst]||'var(--med-fg)'}"></span>${seg.name}</span><span class="seg-count">${seg.steps.length}</span></span><span class="seg-sub">${seg.sub}</span>`;
+    b.onclick=()=>{si=i;pi=0;render();};
+    w.appendChild(b);
+  });
+}
+
+function buildDots(){
+  const d=$("dots"); d.innerHTML="";
+  SEGMENTS[si].steps.forEach((_,i)=>{
+    const b=document.createElement("button");
+    b.className="pdot"; b.setAttribute("aria-current", i===pi?"true":"false");
+    b.setAttribute("aria-label","Step "+(i+1));
+    b.onclick=()=>{pi=i;render();};
+    d.appendChild(b);
+  });
+}
+
+function render(){
+  const seg=SEGMENTS[si], st=seg.steps[pi];
+  document.querySelectorAll(".seg").forEach((el,i)=>el.setAttribute("aria-selected", i===si?"true":"false"));
+  $("finding").innerHTML=seg.finding;
+  const img=$("shot");
+  img.src="img/"+st.img+".png";
+  img.alt=seg.name+" — "+st.t;
+  $("stepof").textContent=seg.name+" journey";
+  $("chips").innerHTML=`<span class="chip ${sevClass(st.sev)}">${sevLabel(st.sev)}</span><span class="chip kind">${st.kind}</span>`;
+  $("title").textContent=st.t;
+  $("desc").textContent=st.d;
+  $("counter").textContent="Step "+(pi+1)+" / "+seg.steps.length;
+  $("prev").disabled = pi===0;
+  $("next").disabled = pi===seg.steps.length-1;
+  buildDots();
+}
+
+$("prev").onclick=()=>{if(pi>0){pi--;render();}};
+$("next").onclick=()=>{if(pi<SEGMENTS[si].steps.length-1){pi++;render();}};
+document.addEventListener("keydown",e=>{
+  if(e.key==="ArrowRight"){if(pi<SEGMENTS[si].steps.length-1){pi++;render();}}
+  if(e.key==="ArrowLeft"){if(pi>0){pi--;render();}}
+});
+
+buildTabs();
+render();
+</script>

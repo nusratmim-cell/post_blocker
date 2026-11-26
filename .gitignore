@@ -1,0 +1,6 @@
+# Full session transcript — contains API tokens in plaintext. Never commit.
+audit-sessions/**/transcript/
+*.jsonl
+
+# Local agent/editor config
+.claude/
